@@ -612,7 +612,7 @@ static int lua_downloadasync(lua_State *L){
 static int lua_string(lua_State *L){
 	int argc = lua_gettop(L);
 	#ifndef SKIP_ERROR_HANDLING
-	if (argc < 1 || argc > 4) return luaL_error(L, "wrong number of arguments");
+	if (argc < 1 || argc > 5) return luaL_error(L, "wrong number of arguments");
 	if (asyncMode != DOWNLOAD_END) return luaL_error(L, "cannot download file when async download is active");
 	if (!isNet) return luaL_error(L, "Network is not inited");
 	#endif
@@ -620,6 +620,7 @@ static int lua_string(lua_State *L){
 	const char* useragent = (argc >= 2) ? luaL_checkstring(L,2) : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
 	uint8_t method = (argc >= 3) ? luaL_checkinteger(L,3) : SCE_HTTP_METHOD_GET;
 	const char* postdata = (argc >= 4) ? luaL_checkstring(L,4) : NULL;
+	const char* headerdata = (argc >= 5) ? luaL_checkstring(L,5) : NULL;
 	int postsize = (argc >= 4) ? strlen(postdata) : 0;
 	curl_easy_reset(curl_handle);
 	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
@@ -656,6 +657,9 @@ static int lua_string(lua_State *L){
 	headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
 	headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 	headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
+	if (headerdata != NULL){
+		headerchunk = curl_slist_append(headerchunk, headerdata);
+	}
 	curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, headerchunk);
 	curl_easy_perform(curl_handle);
 	curl_slist_free_all(headerchunk);
