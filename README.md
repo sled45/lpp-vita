@@ -5,7 +5,7 @@
 [![Build Status](https://dev.azure.com/rinnegatamante/lpp-vita/_apis/build/status/Rinnegatamante.lpp-vita?branchName=master)](https://dev.azure.com/rinnegatamante/lpp-vita/_build/latest?definitionId=1&branchName=master)
 
 # Description
-
+### (This is a custom fork I quickly cobbled together so I can add headers to POST requests.)
 **Lua Player Plus Vita** is the first lua interpreter made for the Sony PlayStation Vita.
 
 The interpreter currently runs under LuaJIT 2.1 with slight additions from Lua 5.2.4 (for example the bit32 lib for bitwise operations). 
